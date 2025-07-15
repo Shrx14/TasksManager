@@ -1,0 +1,35 @@
+@model TasksManager.Models.TaskMaster
+
+@{
+    ViewData["Title"] = "Edit Task Status";
+}
+
+<h1>Edit Task Status</h1>
+
+<div>
+    <h4>Task ID: @Model.TaskId</h4>
+    <h4>Employee Domain ID: @Model.EmployeeDomainId</h4>
+    <h4>Task Description: @Model.TaskDescription</h4>
+    <h4>Current Status: @(ViewBag.LatestStatus ?? "No status")</h4>
+</div>
+
+<form asp-action="EditStatus" method="post">
+    <input type="hidden" asp-for="TaskId" />
+    <div class="form-group">
+        <label for="status">New Status</label>
+        <input type="text" name="status" class="form-control" />
+        @{
+            var statusModelState = ViewData.ModelState != null && ViewData.ModelState.ContainsKey("Status") ? ViewData.ModelState["Status"] : null;
+        }
+        @if (statusModelState != null && statusModelState.Errors.Count > 0)
+        {
+            <span class="text-danger">@statusModelState.Errors[0].ErrorMessage</span>
+        }
+    </div>
+    <button type="submit" class="btn btn-primary">Update Status</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,26 @@
+@model TasksManager.Models.TaskMaster
+
+@{
+    ViewData["Title"] = "Create Task";
+}
+
+<h1>Create Task</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="EmployeeDomainId"></label>
+        <input asp-for="EmployeeDomainId" class="form-control" />
+        <span asp-validation-for="EmployeeDomainId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TaskDescription"></label>
+        <textarea asp-for="TaskDescription" class="form-control"></textarea>
+        <span asp-validation-for="TaskDescription" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
