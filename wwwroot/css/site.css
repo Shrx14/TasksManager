@@ -19,4 +19,132 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #2b3792;
+  padding: 20px;
+  padding-top: 80px; /* Added padding to prevent content hidden behind fixed navbar */
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+a {
+  color: #586e85;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+table.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+table.table th,
+table.table td {
+  border: 1px solid #dee2e6;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+table.table thead th {
+  background-color: #2f4359;
+  color: #fff;
+  font-weight: 600;
+}
+
+table.table tbody tr:hover {
+  background-color: #f1f3f5;
+  cursor: pointer;
+}
+
+.navbar {
+  background-color: #2f4359; /* Changed to blue color */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 10px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030;
+}
+
+/* Remove padding/margin from container-fluid inside navbar to make full width */
+.navbar > .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.navbar .navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #fff;
+  padding-top: 5px;
+}
+
+.navbar .navbar-brand:hover {
+  color: #e0e0e0;
+  text-decoration: none;
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+  margin-right: 15px;
+  font-size: 1rem;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #cce5ff;
+  background-color: rgba(255, 255, 255, 0.15);
+  text-decoration: none;
+}
+
+.navbar-collapse.collapse.d-sm-inline-flex.justify-content-between {
+  margin-left: 40px;
+}
+
+.navbar .nav-link:hover {
+  color: #cce5ff;
+  text-decoration: underline;
+}
+
+.navbar .nav-link.active {
+  font-weight: 600;
+  color: #cce5ff;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.navbar-text {
+  color: #fff !important;
+  font-size: 0.9rem;
+}
+
+.username-text {
+  color: #fff;
+}
+
+.navbar-logo {
+  width: 70px;
+  height: auto;
+  margin-right: 8px;
+  vertical-align: middle;
+  padding-top: 5px;
 }

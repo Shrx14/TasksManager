@@ -38,6 +38,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseMiddleware<TasksManager.Middleware.TcpErrorHandlingMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
