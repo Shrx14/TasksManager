@@ -13,21 +13,20 @@ CREATE TABLE TaskMaster (
     EmployeeDomainId NVARCHAR(255) NOT NULL,
     TaskDescription NVARCHAR(255) NOT NULL,
     CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
-    SiteCode NVARCHAR(100),       -- New column
-    PlantCode NVARCHAR(100),      -- New column
-    Function NVARCHAR(100)        -- New column
+    SiteCode NVARCHAR(100),       
+    PlantCode NVARCHAR(100),      
+    Function NVARCHAR(100)        
 );
 GO
 
--- Create TaskTransaction table with additional columns
-CREATE TABLE TaskTransaction (
-    TaskTransactionId INT IDENTITY(1,1) PRIMARY KEY,
+-- Create Tasklogs table with additional columns
+CREATE TABLE Tasklogs (
     TaskId INT NOT NULL,
     Status NVARCHAR(255) NOT NULL,
+    PrevoiusStatus NVARCHAR(255) NOT NULL,
+    Remarks NVARCHAR(255),
+    CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
     StatusUpdateDate DATETIME NOT NULL DEFAULT GETDATE(),
-    SiteCode NVARCHAR(100),       -- New column
-    PlantCode NVARCHAR(100),      -- New column
-    Function NVARCHAR(100),       -- New column
     CONSTRAINT FK_TaskTransaction_TaskMaster FOREIGN KEY (TaskId) REFERENCES TaskMaster(TaskId)
 );
 GO
