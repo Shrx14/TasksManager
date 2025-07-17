@@ -20,6 +20,7 @@
             <th>Plant Code</th>
             <th>Functions</th>
             <th>Created Date</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -34,6 +35,7 @@
             <td>@item.PlantCode</td>
             <td>@(item.Functions ?? "")</td>
             <td>@item.CreatedDate.ToString("g")</td>
+            <td>@(ViewBag.LatestStatuses != null && ViewBag.LatestStatuses.ContainsKey(item.TaskId) ? ViewBag.LatestStatuses[item.TaskId] : "No status")</td>
             <td>
                 <a asp-action="EditStatus" asp-route-id="@item.TaskId">Edit Status</a>
             </td>
