@@ -15,6 +15,12 @@ namespace TasksManager.Models
 
         public string? Status { get; set; }
 
+        public string? SiteCode { get; set; }
+
+        public string? PlantCode { get; set; }
+
+        public string? Function { get; set; }
+
         public DateTime StatusUpdateDate { get; set; } = DateTime.Now;
 
         public virtual TaskMaster? TaskMaster { get; set; }

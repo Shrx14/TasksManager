@@ -16,6 +16,11 @@ namespace TasksManager.Data
             modelBuilder.Entity<TasksManager.Models.TaskTransaction>()
                 .Property(t => t.TransactionId)
                 .HasColumnName("TaskTransactionId");
+
+            modelBuilder.Entity<TasksManager.Models.TaskMaster>()
+                .ToTable("TaskMaster")
+                .Property(t => t.Functions)
+                .HasColumnName("Functions");
         }
     }
 }

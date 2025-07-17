@@ -14,6 +14,12 @@ namespace TasksManager.Models
         [Required]
         public string? TaskDescription { get; set; }
 
+        public string? SiteCode { get; set; } 
+
+        public string? PlantCode { get; set; } 
+
+        public string? Functions { get; set; }
+
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         // Add other relevant columns as needed

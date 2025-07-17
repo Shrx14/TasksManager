@@ -16,6 +16,9 @@
             <th>Task ID</th>
             <th>Employee Domain ID</th>
             <th>Task Description</th>
+            <th>Site Code</th>
+            <th>Plant Code</th>
+            <th>Functions</th>
             <th>Created Date</th>
             <th>Actions</th>
         </tr>
@@ -27,6 +30,9 @@
             <td>@item.TaskId</td>
             <td>@item.EmployeeDomainId</td>
             <td>@item.TaskDescription</td>
+            <td>@item.SiteCode</td>
+            <td>@item.PlantCode</td>
+            <td>@(item.Functions ?? "")</td>
             <td>@item.CreatedDate.ToString("g")</td>
             <td>
                 <a asp-action="EditStatus" asp-route-id="@item.TaskId">Edit Status</a>
