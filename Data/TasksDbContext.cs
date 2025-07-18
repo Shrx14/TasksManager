@@ -10,6 +10,7 @@ namespace TasksManager.Data
 
         public DbSet<TasksManager.Models.TaskMaster> TaskMaster { get; set; }
         public DbSet<TasksManager.Models.TaskTransaction> TaskTransaction { get; set; }
+        public DbSet<TasksManager.Models.TaskLog> TaskLog { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,10 @@ namespace TasksManager.Data
                 .ToTable("TaskMaster")
                 .Property(t => t.Functions)
                 .HasColumnName("Functions");
+
+            modelBuilder.Entity<TasksManager.Models.TaskLog>()
+                .ToTable("TaskLogs")
+                .HasKey(t => new { t.TaskId, t.StatusUpdateDate });
         }
     }
 }

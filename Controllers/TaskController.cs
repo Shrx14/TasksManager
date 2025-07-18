@@ -20,6 +20,31 @@ namespace TasksManager.Controllers
         public async Task<IActionResult> Index()
         {
             var tasks = await _context.TaskMaster.ToListAsync();
+
+            var taskStatuses = await _context.TaskLog
+                .GroupBy(t => t.TaskId)
+                .Select(g => new
+                {
+                    TaskId = g.Key,
+                    LatestStatus = g.OrderByDescending(t => t.StatusUpdateDate).FirstOrDefault().Status
+                })
+                .ToListAsync();
+
+            var taskStatusDict = taskStatuses.ToDictionary(ts => ts.TaskId, ts => ts.LatestStatus);
+
+            foreach (var task in tasks)
+            {
+                if (taskStatusDict.TryGetValue(task.TaskId, out var latestStatus))
+                {
+                    task.Status = latestStatus;
+                }
+                else
+                {
+                    // Use the status from TaskMaster if no latest status in TaskLogs
+                    task.Status = task.Status ?? "No status";
+                }
+            }
+
             return View(tasks);
         }
 
@@ -57,7 +82,7 @@ namespace TasksManager.Controllers
                 return NotFound();
             }
 
-            var latestStatus = await _context.TaskTransaction
+            var latestStatus = await _context.TaskLog
                 .Where(t => t.TaskId == id)
                 .OrderByDescending(t => t.StatusUpdateDate)
                 .FirstOrDefaultAsync();
@@ -70,34 +95,59 @@ namespace TasksManager.Controllers
         // POST: Task/EditStatus/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditStatus(int id, string status)
+        public async Task<IActionResult> EditStatus(int TaskId, string status)
         {
             if (string.IsNullOrEmpty(status))
             {
                 ModelState.AddModelError("Status", "Status is required.");
             }
 
-            var taskMaster = await _context.TaskMaster.FindAsync(id);
+            var taskMaster = await _context.TaskMaster.FindAsync(TaskId);
             if (taskMaster == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                var taskTransaction = new TaskTransaction
+                if (ModelState.IsValid)
                 {
-                    TaskId = id,
-                    Status = status,
-                    StatusUpdateDate = System.DateTime.Now
-                };
-                _context.TaskTransaction.Add(taskTransaction);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+                    var latestLog = await _context.TaskLog
+                        .Where(t => t.TaskId == TaskId)
+                        .OrderByDescending(t => t.StatusUpdateDate)
+                        .FirstOrDefaultAsync();
 
-            var latestStatus = await _context.TaskTransaction
-                .Where(t => t.TaskId == id)
+                    // Determine PreviousStatus for TaskLog
+                    string previousStatus;
+                    if (latestLog == null)
+                    {
+                        // No previous logs, use TaskMaster.Status as original status
+                        previousStatus = taskMaster.Status ?? "No status";
+                    }
+                    else
+                    {
+                        previousStatus = latestLog.Status;
+                    }
+
+                    var taskLog = new TaskLog
+                    {
+                        TaskId = TaskId,
+                        Status = status,
+                        PreviousStatus = previousStatus,
+                        CreatedDate = System.DateTime.Now,
+                        StatusUpdateDate = System.DateTime.Now
+                    };
+                    _context.TaskLog.Add(taskLog);
+
+                    // Update TaskMaster status
+                    taskMaster.Status = status;
+
+                    _context.Entry(taskMaster).State = EntityState.Modified;
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+            var latestStatus = await _context.TaskLog
+                .Where(t => t.TaskId == TaskId)
                 .OrderByDescending(t => t.StatusUpdateDate)
                 .FirstOrDefaultAsync();
 
